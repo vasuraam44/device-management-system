@@ -1,0 +1,39 @@
+
+.uploadcntr{
+   
+    padding: 20px;
+    margin: 20px;
+}
+
+
+.uploadapk1{
+    padding: 30px;
+    margin: 20px;
+    box-shadow: 0 0px 6px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;  
+
+   
+}
+.uploadapk1:hover{
+    box-shadow: 3px 8px 12px 0 rgba(0,0,0,0.2);
+}
+.uploadform{
+    width: 60%;
+   
+    padding: 30px;
+    margin-left: 20%;
+}
+.fileblock{
+    padding: 30px;
+    margin: 20px;
+    width: 100%;
+    
+    
+}
+
+.nxtbtn{
+    width: 20%;
+    margin-left: 70%;
+   
+    
+}
