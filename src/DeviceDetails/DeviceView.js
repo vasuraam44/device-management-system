@@ -29,7 +29,6 @@ export function DeviceView() {
 
                 <Container>
                     <h1>Device details</h1>
-
                     <Table bordered hover striped variant="dark">
                         <thead>
                             <tr align="center">

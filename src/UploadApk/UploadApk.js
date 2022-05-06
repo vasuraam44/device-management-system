@@ -1,5 +1,5 @@
 import './UploadApk.css';
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import { Container, ProgressBar } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 
@@ -11,7 +11,9 @@ export function UploadApk() {
     //     uploadedpercent:0
     // }
 
+    const inputEl = useRef('')
     const [files, setFiles] = useState([]);
+    const [version, setVersion] = useState('');
     const [progress, setProgress] = useState();
     const [uploadedpercent, setUpdateProgres] = useState(0)
 
@@ -32,9 +34,20 @@ export function UploadApk() {
         //console.log(file)
         setFiles([...files, { file }]);
 
-
     };
 
+    const versionHandler = (event) => {
+       setVersion(event.target.value)
+    }
+
+    const resetHandler=()=>{
+        setFiles([]);
+        setVersion('');
+        setUpdateProgres(0);
+        inputEl.current.value = '';
+        setFileUploadResponse('');
+
+    }
 
 
     const fileSubmitHandler = (event) => {
@@ -47,10 +60,11 @@ export function UploadApk() {
         const formData = new FormData();
         //console.log(files[0]);
         for (let i = 0; i < files.length; i++) {
-
             console.log(files[i].file);
             formData.append('files', files[i].file);
         }
+        formData.append('version',version);
+
         
         // const requestOptions = {
         //     onUploadProgress: (progressEvent) => {
@@ -88,8 +102,6 @@ export function UploadApk() {
         //     });
         // setFileUploadProgress(false);
 
-
-
         const options = {
             onUploadProgress: (progressEvent) => {
                 const {loaded,total}=progressEvent;
@@ -100,9 +112,7 @@ export function UploadApk() {
 
                 if(percent<=100){
                         setUpdateProgres(percent);
-                   
                 }
-
             }
         }
 
@@ -119,16 +129,17 @@ export function UploadApk() {
                     setFileUploadResponse(data.message);
                     return Promise.reject(error);
                 }
-                
+              
                 console.log(data.message);
                 setFileUploadResponse(data.message);
                 setFileUploadProgress(false);
                 setUpdateProgres(0)
               
-
                 // setTimeout(()=>{
                 //     setUpdateProgres(0)
                 // },50)
+                
+                resetHandler();
                
             }).catch(error => {
                 console.error('Error while uploading file!', error);
@@ -147,20 +158,30 @@ export function UploadApk() {
                     <div className='uploadform'>
 
                         <form onSubmit={fileSubmitHandler}>
-
                             <div className='fileblock'>
                                 <label>Choose ExcellFile </label>
-                                <input type="file" id={0} onChange={uploadFileHandler} accept=".xlsx" required />
+                                <input type="file" id={0} ref={inputEl} onChange={uploadFileHandler} accept=".xlsx" required />
                                 <br></br>
                             </div>
                             <div className='fileblock'>
                                 <label>Choose APkFile</label>
-                                <input type="file" id={1} onChange={uploadFileHandler} accept=".apk" required />
+                                <input type="file" id={1} ref={inputEl} onChange={uploadFileHandler} accept=".apk" required />
                                 <br></br>
                             </div>
+                            <div className='fileblock'>
+                                <label>Choose EVT File</label>
+                                <input type="file" id={2} ref={inputEl} onChange={uploadFileHandler} accept=".evt, .evtp, .evtps " required />
+                                <br></br>
+                                <br></br>
+                                
+                                <input type="text" id={2} className="form-control" onChange={versionHandler} placeholder='Enter Version' required />
+                               
+                            </div>
+                           
                             {uploadedpercent>0 && <ProgressBar now={uploadedpercent}  label={`${uploadedpercent}%`} />}
                             <br></br>
                             <button type='submit' className='btn btn-secondary'>Upload</button>
+                            <button type='reset' className='btn btn-secondary resetbtn' onClick={resetHandler}>Reset</button>
 
                             {/* {uploadedpercent>0 && <p style={{ color: 'blue' }}>Uploading Files</p>} */}
                             {fileUploadResponse != null && <p style={{ color: 'green' }}>{fileUploadResponse}</p>}
