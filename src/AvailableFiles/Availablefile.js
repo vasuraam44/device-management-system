@@ -6,11 +6,12 @@ import { Table, Container } from "react-bootstrap";
 
 export function Availablefile() {
 
+    const FILE_UPLOAD_BASE_ENDPOINT = "http://localhost:8080";
     const [fileDetails, setFileDetails] = useState([]);
     //const [i, setI] = useState(0);
     
     function getEvents() {
-        axios.get("http://localhost:8080/getAvailable/allFiles")
+        axios.get(FILE_UPLOAD_BASE_ENDPOINT+"/getAvailable/allFiles")
             .then(response => response.data)
             .then((data) => {
                 setFileDetails(data)

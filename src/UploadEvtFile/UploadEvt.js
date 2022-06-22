@@ -82,7 +82,6 @@ export function UploadEvt() {
         axios.post(FILE_UPLOAD_BASE_ENDPOINT + "/file/uploadevt", formData, options)
             .then(response => {
                 console.log(response);
-
                 const data = response.data;
                 // check for error response
                 if (response.status !== 200) {
@@ -93,9 +92,10 @@ export function UploadEvt() {
                 }
 
                 console.log(data.message);
+
                 setFileUploadResponse(data.message);
                 setFileUploadProgress(false);
-                setUpdateProgres(0)
+                setUpdateProgres(0);
 
                 resetHandler();
             }).catch(error => {

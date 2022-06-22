@@ -26,7 +26,7 @@ export function UploadFile() {
 
     const [version, setVersion] = useState('');
 
-    const FILE_UPLOAD_BASE_ENDPOINT = "http://localhost:8080";
+    const ENDURL = "http://192.168.210.165:8080";
     
     const versionHandler = (event) => {
         setVersion(event.target.value);
@@ -107,7 +107,8 @@ export function UploadFile() {
             }
         }
 
-        axios.post("http://localhost:8080/files/upload", formData, options)
+        //http://localhost:8080/files/upload
+        axios.post(ENDURL+"/files/upload", formData, options)
             .then(response => {
                 console.log(response);
                 

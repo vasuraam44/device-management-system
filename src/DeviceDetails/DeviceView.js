@@ -7,10 +7,13 @@ import { Table, Container } from "react-bootstrap";
 
 export function DeviceView() {
 
+
+    const FILE_UPLOAD_BASE_ENDPOINT = "http://localhost:8080";
+
     const [eventDetails, setEventDetails] = useState([])
-    //let { id } = useParams();
+//let { id } = useParams();
     function getEvents() {
-        axios.get("http://localhost:8080/apkdetails")
+        axios.get(FILE_UPLOAD_BASE_ENDPOINT+"/apkdetails")
             .then(response => response.data)
             .then((data) => {
                 setEventDetails(data)
@@ -34,8 +37,8 @@ export function DeviceView() {
                             <tr align="center">
                                 <th>Device SNo</th>
                                 <th>Current Version</th>
+                                <th>Downloaded Version</th>
                                 <th>Status</th>
-
                             </tr>
                         </thead>
                         <tbody>
@@ -49,7 +52,49 @@ export function DeviceView() {
                                         <tr key={apkDetail.id}>
                                             <td> {apkDetail.device.deviceNo}</td>
                                             <td> {apkDetail.current_version}</td>
-                                            <td> {apkDetail.status}</td>
+                                            <td> {apkDetail.downloaded_version}</td>
+
+                                            {
+                                                (() => {
+                                                    const successStyle = {
+                                                        color: "green",
+                                                        padding: "10px",
+                                                        fontWeight: "bold",
+                                                        fontFamily: "Sans-Serif"
+                                                    }
+                                                    const failedStyle={
+                                                        color: "red",
+                                                        padding: "10px",
+                                                        fontWeight: "bold",
+                                                        fontFamily: "Sans-Serif"
+
+                                                    }
+
+                                                    const pendingStyle={
+                                                        color: "blue",
+                                                        padding: "10px",
+                                                        fontWeight: "bold",
+                                                        fontFamily: "Sans-Serif"
+                                                    }
+                                                    if (apkDetail.status === 'success') {
+                                                        return (
+                                                            <td style={successStyle}>{apkDetail.status}</td>
+                                                        )
+                                                    } else if (apkDetail.status === "Failed") {
+                                                        return (
+                                                            <td style={failedStyle}>{apkDetail.status}</td>
+                                                        )
+                                                    } else if(apkDetail.status === "in progress"){
+                                                        return (
+                                                            <td style={pendingStyle}>{apkDetail.status}</td>
+                                                        )
+                                                    }else {
+                                                        return (
+                                                            <td >{apkDetail.status}</td>
+                                                        )
+                                                    }
+                                                })()
+                                            }
                                         </tr>
                                 )
 
